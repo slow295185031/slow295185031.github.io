@@ -1,0 +1,44 @@
+---
+title: Tag Cloud
+layout: page
+cover-image: 10.jpg
+---
+
+<link rel="stylesheet" type="text/css" href="/js/jqCloud/jqcloud.css" />
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/js/jqCloud/jqcloud-1.0.4.js"></script>
+<script type="text/javascript">
+/*!
+* Create an array of word objects, each representing a word in the cloud
+ */
+var word_array = [
+{% for tag in site.tags %}
+{text: "{{ tag[0] }}", weight: {{ tag[1].size }}, link: "#{{ tag[0] }}" },
+{% endfor %}
+];
+$(function() {
+    // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+    $("#example").jQCloud(word_array);
+});
+</script>
+
+<hr>
+<div id="example" style="width: 850px; height: 400px;"></div>
+<hr>
+
+{% for tag in site.tags %}
+<div >
+    <h2 class="fa fa-tag" id="{{ tag[0] }}" style="font-size:30px">
+        <span>{{ tag[0] }} ({{ tag[1].size }})</span>
+    </h2>
+    {% for post in tag[1] %}
+    <p >
+    <a href="{{ post.url | prepend: site.baseurl }}">
+        {{ post.title }}
+    </a>
+    <small> • {{ post.date | date: site.date_format }}</small></p>
+    </p>
+    {% endfor %}
+</div>
+<hr>
+{% endfor %}
